@@ -1,0 +1,16 @@
+# Mac
+.DS_Store
+
+# Unrelated coursework — keep this repo focused on the final project
+Homework/
+Lectures/
+Datasets/
+StudyMaterials/
+
+# Large dataset file (96 MB, exceeds GitHub limits — pull from Kaggle instead)
+FinalProject/data/archive/sp500_stocks.csv
+
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
