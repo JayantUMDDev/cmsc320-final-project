@@ -7806,7 +7806,7 @@ Placeholder/empty tickers (excluded by dropna): 330
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Preprocessing-Steps">Preprocessing Steps<a class="anchor-link" href="#Preprocessing-Steps">¶</a></h3><p>Real-world CSVs are usually never analysis-ready. The steps below fix data types, attach sector labels, sort the data so per-stock time-series operations actually work, and compute the daily return for the rest of the analysis.</p>
+<h3 id="Preprocessing-Steps">Preprocessing Steps<a class="anchor-link" href="#Preprocessing-Steps">¶</a></h3><p>This CSV is not ready for analysis yet. The steps below fix data types, attach sector labels, sort the data so per-stock time-series operations actually work, and compute the daily return for the rest of the analysis.</p>
 <ol>
 <li>Parse dates: convert the <code>Date</code> column to <code>datetime64</code>.</li>
 <li>Coerce numerics: prices and volume are sometimes stored as strings, so I use <code>pd.to_numeric(..., errors='coerce')</code> to push non-numeric entries to NaN.</li>
@@ -7969,7 +7969,7 @@ Date range    : 2015-01-02 to 2024-12-20
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Analysis-1:-Distribution-of-Daily-Returns">Analysis 1: Distribution of Daily Returns<a class="anchor-link" href="#Analysis-1:-Distribution-of-Daily-Returns">¶</a></h3><p>I use descriptive statistics (mean, standard deviation, skewness, excess kurtosis) and a histogram to summarize the shape of daily returns across all the S&amp;P 500 stocks in my dataset. <a href="https://en.wikipedia.org/wiki/Kurtosis#Excess_kurtosis">Excess kurtosis</a> basically measures how heavy the tails are compared to a normal distribution: 0 means roughly normal, anything well above 3 means fat tails where extreme moves happen way more often than a bell curve would predict.</p>
+<h3 id="Analysis-1:-Distribution-of-Daily-Returns">Analysis 1: Distribution of Daily Returns<a class="anchor-link" href="#Analysis-1:-Distribution-of-Daily-Returns">¶</a></h3><p>I use descriptive statistics (mean, standard deviation, skewness, excess kurtosis) and a histogram to summarize the shape of daily returns across all the S&amp;P 500 stocks in my dataset. <a href="https://en.wikipedia.org/wiki/Kurtosis#Excess_kurtosis">Excess kurtosis</a> basically measures how heavy the tails are compared to a normal distribution. 0 means roughly normal, anything noticeably above 0 means fat tails, where extreme moves happen way more often than a bell curve would predict. Daily stock returns are pretty famous for sitting well above 0.</p>
 <p>My hypothesis here is that daily returns are roughly normally distributed with a mean close to 0.</p>
 </div>
 </div>
@@ -8063,7 +8063,7 @@ Kurtosis : 21.9958  (normal = 0 for excess)
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Analysis-2:-Do-Sectors-Have-Different-Mean-Returns?-(One-Way-ANOVA)">Analysis 2: Do Sectors Have Different Mean Returns? (One-Way ANOVA)<a class="anchor-link" href="#Analysis-2:-Do-Sectors-Have-Different-Mean-Returns?-(One-Way-ANOVA)">¶</a></h3><p>I run a <a href="https://en.wikipedia.org/wiki/One-way_analysis_of_variance">one-way ANOVA</a> here, which basically asks: are the average daily returns the same across all 11 S&amp;P 500 GICS sectors, or is at least one sector behaving really differently from the rest? The test compares how spread out the sector means are vs how noisy the data is within each sector. A small p-value means at least one sector is meaningfully different.</p>
+<h3 id="Analysis-2:-Do-Sectors-Have-Different-Mean-Returns?-(One-Way-ANOVA)">Analysis 2: Do Sectors Have Different Mean Returns? (One-Way ANOVA)<a class="anchor-link" href="#Analysis-2:-Do-Sectors-Have-Different-Mean-Returns?-(One-Way-ANOVA)">¶</a></h3><p>I run a <a href="https://en.wikipedia.org/wiki/One-way_analysis_of_variance">one-way ANOVA</a> here, which asks: are the average daily returns the same across all 11 S&amp;P 500 GICS sectors, or is at least one sector behaving really differently from the rest? The test compares how spread out the sector means are vs how noisy the data is within each sector. A small p-value means at least one sector is meaningfully different.</p>
 <ul>
 <li>H0: All 11 sectors have the same mean daily return.</li>
 <li>H1: At least one sector's mean daily return differs.</li>
