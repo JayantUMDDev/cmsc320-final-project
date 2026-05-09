@@ -7583,7 +7583,6 @@ a.anchor-link {
 <li>Are some sectors easier to model than others, or do these signals work better in certain sectors (like tech vs utilities)?</li>
 <li>When a model does well in one time period, does it still work later, or does the market "change the rules" over time?</li>
 </ul>
-<h3 id="How-to-read-this-tutorial">How to read this tutorial<a class="anchor-link" href="#How-to-read-this-tutorial">¶</a></h3><p>The notebook walks from the raw CSVs through cleaning, exploratory hypothesis tests, feature engineering, model training, and finally evaluation. Each section starts with a short explanation of what I'm doing and why, and then shows the code. The final answer is in the Insights and Conclusions section at the end.</p>
 </div>
 </div>
 </div>
@@ -7807,7 +7806,7 @@ Placeholder/empty tickers (excluded by dropna): 330
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Preprocessing-Steps">Preprocessing Steps<a class="anchor-link" href="#Preprocessing-Steps">¶</a></h3><p>Real-world CSVs are pretty much never analysis-ready. The steps below fix data types, attach sector labels, sort the data so per-stock time-series operations actually work, and compute the daily return that drives the rest of the analysis.</p>
+<h3 id="Preprocessing-Steps">Preprocessing Steps<a class="anchor-link" href="#Preprocessing-Steps">¶</a></h3><p>Real-world CSVs are usually never analysis-ready. The steps below fix data types, attach sector labels, sort the data so per-stock time-series operations actually work, and compute the daily return for the rest of the analysis.</p>
 <ol>
 <li>Parse dates: convert the <code>Date</code> column to <code>datetime64</code>.</li>
 <li>Coerce numerics: prices and volume are sometimes stored as strings, so I use <code>pd.to_numeric(..., errors='coerce')</code> to push non-numeric entries to NaN.</li>
@@ -7826,7 +7825,7 @@ Placeholder/empty tickers (excluded by dropna): 330
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">stocks</span><span class="p">[</span><span class="s1">'Date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">stocks</span><span class="p">[</span><span class="s1">'Date'</span><span class="p">])</span>
@@ -7870,7 +7869,7 @@ Date range    : 2015-01-02 to 2024-12-20
 </div>
 </div>
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[3]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[ ]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -7958,13 +7957,8 @@ Date range    : 2015-01-02 to 2024-12-20
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Exploratory-Data-Analysis">Exploratory Data Analysis<a class="anchor-link" href="#Exploratory-Data-Analysis">¶</a></h2><p>Before any modeling, I want to check three things that all need to be true (or interestingly false) for a momentum or volume model to even make sense:</p>
-<ol>
-<li>What does the return distribution actually look like? Is it normal, or fat-tailed?</li>
-<li>Do different sectors have different mean returns? If so, sector belongs in the model.</li>
-<li>Does trading volume relate to return magnitude? This is the empirical reason for using a <code>vol_ratio</code> feature later.</li>
-</ol>
-<p>For each one, I state a hypothesis, run a formal test, and end with a short conclusion. Every test reports a p-value, and I use $\alpha = 0.05$ throughout.</p>
+<h2 id="Exploratory-Data-Analysis">Exploratory Data Analysis<a class="anchor-link" href="#Exploratory-Data-Analysis">¶</a></h2><p>Before I get into the actual model, I want to do some exploratory analysis to figure out what the data actually looks like and decide which features even make sense to feed in. I'm running three different statistical methods here, and each one is tied to a modeling decision I'll have to make later.</p>
+<p>The first is descriptive statistics on daily returns, so I can see whether assuming normality anywhere would be a bad idea. The second is a one-way ANOVA on sector means, which tells me whether I should pool all sectors together or treat them separately. The third is a Welch t-test on whether trading volume is related to the size of a price move, which is basically the reason I'm even considering a volume feature in the model. Each one comes with a plot and a short conclusion, and I'm using $\alpha = 0.05$ throughout.</p>
 </div>
 </div>
 </div>
