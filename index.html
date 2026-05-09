@@ -8927,12 +8927,12 @@ Sectors where RF (after threshold tuning) beats naive: 3 of 11
 <li>Fat tails matter for any practical use. Analysis 1 showed excess kurtosis above 20. Even a model with a tiny accuracy edge can get wiped out by a single extreme day, which is one reason why an "edge" alone isn't a "strategy."</li>
 </ol>
 <h3 id="Limitations">Limitations<a class="anchor-link" href="#Limitations">¶</a></h3><ul>
-<li>No transaction costs. A 1% predictive edge usually disappears after bid/ask spreads and commissions for a retail trader, and my edge here is well below 1%.</li>
-<li>Survivorship bias. The dataset only contains current S&amp;P 500 constituents (companies that survived to 2024). Bankruptcies and delistings are missing, which mechanically pushes returns up.</li>
-<li>Coverage gap. Only 172 of the file's 502 nominal tickers actually have real history. Recent additions and IPOs are missing, so my universe leans toward longer-tenured large caps.</li>
-<li>The market "changes the rules" over time. Market dynamics shift with rate regimes, macro shocks (COVID 2020), and structural changes. My walk-forward folds show the naive up-rate moving from 0.5066 (fold 4, 2021-23) to 0.5353 (fold 1, 2016-18), which is a regime swing on its own that's actually larger than any model edge.</li>
-<li>Feature simplicity. Six engineered features can't really compete with what hedge funds actually use (earnings data, macro indicators, NLP-derived sentiment, cross-asset signals, microstructure data).</li>
-<li>Threshold tuned on test. My single-split numbers tune the threshold on the test set itself for tutorial simplicity. The walk-forward CV partially makes up for this, but a more rigorous study would tune on a separate validation slice.</li>
+<li>No transaction costs: a 1% predictive edge usually disappears after bid/ask spreads and commissions for a retail trader, and my edge here is well below 1%.</li>
+<li>Survivorship bias: the dataset only contains current S&amp;P 500 constituents (companies that survived to 2024). Bankruptcies and delistings are missing, which mechanically pushes returns up.</li>
+<li>Coverage gap: only 172 of the file's 502 nominal tickers actually have real history. Recent additions and IPOs are missing, so my universe leans toward longer-tenured large caps.</li>
+<li>The market "changes the rules" over time: market dynamics shift with rate regimes, macro shocks (COVID 2020), and structural changes. My walk-forward folds show the naive up-rate moving from 0.5066 (fold 4, 2021-23) to 0.5353 (fold 1, 2016-18), which is a regime swing on its own that's actually larger than any model edge.</li>
+<li>Feature simplicity: six engineered features can't really compete with what hedge funds actually use (earnings data, macro indicators, NLP-derived sentiment, cross-asset signals, microstructure data).</li>
+<li>Threshold tuned on test: my single-split numbers tune the threshold on the test set itself for tutorial simplicity. The walk-forward CV partially makes up for this, but a more rigorous study would tune on a separate validation slice.</li>
 </ul>
 <h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h3><p>So in the end, the simple technical signals I tested don't really beat just predicting "up" every day for the broad market. A few sectors (Real Estate, Healthcare, and Basic Materials) show small hints of structure, but the gaps are too small to actually matter. The biggest thing I'm taking away from this project is how important it is to compare any model to a real baseline. Saying "my model got 52% accuracy" sounds fine until you realize the market goes up about 52% of the time anyway.</p>
 <h3 id="Future-Work">Future Work<a class="anchor-link" href="#Future-Work">¶</a></h3><ul>
