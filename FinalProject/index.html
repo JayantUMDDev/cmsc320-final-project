@@ -8755,7 +8755,7 @@ Down/Flat (0)       0.67      0.00      0.00     40159
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>What jumps out is that the confusion matrix is heavily skewed toward predicting "up" — almost every test row falls into the right column (predicted Up), while the left column (predicted Down/Flat) only contains a handful of points. So even after threshold tuning, Random Forest is essentially saying "up" for almost everything, which is the same thing the naive baseline does. The ROC curves for both Logistic Regression and Random Forest sit right on top of the diagonal, which is what AUC ≈ 0.5 looks like visually: there's no real directional information being picked up by either model.</p>
+<p>What jumps out is that the confusion matrix is heavily skewed toward predicting "up". Almost every test row falls into the right column (predicted Up), while the left column (predicted Down/Flat) only contains a handful of points. So even after threshold tuning, Random Forest is essentially saying "up" for almost everything, which is the same thing the naive baseline does. The ROC curves for both Logistic Regression and Random Forest sit right on top of the diagonal, which is what AUC ≈ 0.5 looks like visually: there's no real directional information being picked up by either model.</p>
 </div>
 </div>
 </div>
@@ -8831,7 +8831,7 @@ volatility_20    0.1051
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><code>lag_1</code> (yesterday's return) sits at the top by a clear margin, with <code>lag_5</code> right behind it, so the model is mostly leaning on very recent momentum. <code>vol_ratio</code> ends up in the middle, which is interesting because Analysis 3 showed volume tracks |return| really strongly on the same day — it suggests the predictive part of volume is mostly already captured by the recent return features. <code>volatility_20</code> ends up dead last, which tells me recent turbulence isn't really helping when it comes to predicting tomorrow's direction.</p>
+<p><code>lag_1</code> (yesterday's return) sits at the top by a clear margin, with <code>lag_5</code> right behind it, so the model is mostly leaning on very recent momentum. <code>vol_ratio</code> ends up in the middle, which is interesting because Analysis 3 showed volume tracks |return| really strongly on the same day. That suggests the predictive part of volume is mostly already captured by the recent return features. <code>volatility_20</code> ends up dead last, which tells me recent turbulence isn't really helping when it comes to predicting tomorrow's direction.</p>
 </div>
 </div>
 </div>
@@ -8941,7 +8941,7 @@ Sectors where RF (after threshold tuning) beats naive: 3 of 11
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Most sectors have all three bars at nearly identical heights, which means none of the models is pulling meaningfully away from the naive baseline. The underlying numbers show Random Forest edging out naive in Real Estate, Healthcare, and Basic Materials, but the gaps are so small (a fraction of a percentage point) that you can't actually see the difference in the chart. The two sectors I would've guessed would be the most predictable — Tech and Financial Services — are essentially tied with the baseline. So the small gains, where they exist at all, are concentrated in the less obvious sectors, and they're too small to matter visually or in practice.</p>
+<p>Most sectors have all three bars at nearly identical heights, which means none of the models is pulling meaningfully away from the naive baseline. The underlying numbers show Random Forest edging out naive in Real Estate, Healthcare, and Basic Materials, but the gaps are so small (a fraction of a percentage point) that you can't actually see the difference in the chart. The two sectors I would've guessed would be the most predictable, Tech and Financial Services, are essentially tied with the baseline. So the small gains, where they exist at all, are concentrated in the less obvious sectors, and they're too small to matter visually or in practice.</p>
 </div>
 </div>
 </div>
