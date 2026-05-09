@@ -8063,7 +8063,7 @@ Kurtosis : 21.9958  (normal = 0 for excess)
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Analysis-2:-Do-Sectors-Have-Different-Mean-Returns?-(One-Way-ANOVA)">Analysis 2: Do Sectors Have Different Mean Returns? (One-Way ANOVA)<a class="anchor-link" href="#Analysis-2:-Do-Sectors-Have-Different-Mean-Returns?-(One-Way-ANOVA)">¶</a></h3><p>I run a <a href="https://en.wikipedia.org/wiki/One-way_analysis_of_variance">one-way ANOVA</a> here, which asks: are the average daily returns the same across all 11 S&amp;P 500 GICS sectors, or is at least one sector behaving really differently from the rest? The test compares how spread out the sector means are vs how noisy the data is within each sector. A small p-value means at least one sector is meaningfully different.</p>
+<h3 id="Analysis-2:-Do-Sectors-Have-Different-Mean-Returns?-(One-Way-ANOVA)">Analysis 2: Do Sectors Have Different Mean Returns? (One-Way ANOVA)<a class="anchor-link" href="#Analysis-2:-Do-Sectors-Have-Different-Mean-Returns?-(One-Way-ANOVA)">¶</a></h3><p>I run a <a href="https://en.wikipedia.org/wiki/One-way_analysis_of_variance">one-way ANOVA</a> here, which asks: are the average daily returns the same across all 11 S&amp;P 500 GICS sectors, or is at least one sector behaving significantly differently from the rest? The test compares how spread out the sector means are vs how noisy the data is within each sector. A small p-value means at least one sector is meaningfully different.</p>
 <ul>
 <li>H0: All 11 sectors have the same mean daily return.</li>
 <li>H1: At least one sector's mean daily return differs.</li>
@@ -8156,7 +8156,7 @@ Kurtosis : 21.9958  (normal = 0 for excess)
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Analysis-3:-Does-High-Trading-Volume-Coincide-with-Larger-Price-Swings?-(Welch-t-test)">Analysis 3: Does High Trading Volume Coincide with Larger Price Swings? (Welch t-test)<a class="anchor-link" href="#Analysis-3:-Does-High-Trading-Volume-Coincide-with-Larger-Price-Swings?-(Welch-t-test)">¶</a></h3><p>I use <a href="https://en.wikipedia.org/wiki/Welch%27s_t-test">Welch's t-test</a> here, which is a two-sample test for equal means that doesn't assume the two groups have the same variance. I split each stock's trading days at its own median volume (so a small-cap stock's "high volume" day doesn't get dominated by a mega-cap's normal day) and compare the mean of |daily return| between the two groups.</p>
+<h3 id="Analysis-3:-Does-High-Trading-Volume-Coincide-with-Larger-Price-Swings?-(Welch-t-test)">Analysis 3: Does High Trading Volume Coincide with Larger Price Swings? (Welch t-test)<a class="anchor-link" href="#Analysis-3:-Does-High-Trading-Volume-Coincide-with-Larger-Price-Swings?-(Welch-t-test)">¶</a></h3><p>I use <a href="https://en.wikipedia.org/wiki/Welch%27s_t-test">Welch's t-test</a> here (a two-sample test for equal means that doesn't assume the two groups have the same variance). I split each stock's trading days at its own median volume (so a small-cap stock's "high volume" day doesn't get dominated by a mega-cap's normal day) and compare the mean of |daily return| between the two groups.</p>
 <ul>
 <li>H0: $E[|r|]$ is the same on high- and low-volume days.</li>
 <li>H1: $E[|r|]$ is larger on high-volume days.</li>
@@ -8249,19 +8249,19 @@ Mean |return| low volume : 0.009413
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Primary-Analysis:-Machine-Learning-Classification">Primary Analysis: Machine Learning Classification<a class="anchor-link" href="#Primary-Analysis:-Machine-Learning-Classification">¶</a></h2><h3 id="Approach">Approach<a class="anchor-link" href="#Approach">¶</a></h3><p>I'm framing next-day direction prediction as a binary classification task:</p>
+<h2 id="Primary-Analysis:-Machine-Learning-Classification">Primary Analysis: Machine Learning Classification<a class="anchor-link" href="#Primary-Analysis:-Machine-Learning-Classification">¶</a></h2><h3 id="Approach">Approach<a class="anchor-link" href="#Approach">¶</a></h3><p>The actual question I'm trying to answer is whether a given stock is going to go up or down tomorrow based on the signals I'm feeding the model, so I'm setting this up as a basic binary classification problem.</p>
 <ul>
 <li>Target $y$: 1 if tomorrow's return is greater than 0 (stock goes up), else 0 (flat or down).</li>
 <li>Features $X$: technical signals computed from past prices and volume.</li>
 </ul>
-<p>I went with classification instead of regression on the actual return value for two reasons. First, predicting direction is what most retail investors actually want to know. Second, daily-return regression is really noisy because the signal-to-noise ratio of any single day is bad, so converting to a binary up/down label trades off magnitude information for a more stable target.</p>
+<p>I picked classification over trying to predict the actual return value for a couple of reasons. The big one is that predicting direction (up vs down) is really what most retail investors care about anyway. The other thing is that trying to predict the actual return number is super noisy because daily returns bounce around a lot, so by simplifying everything down to up/down I lose information about the size of the move, but I get a way more stable target for the model to learn.</p>
 <h3 id="Why-these-models?">Why these models?<a class="anchor-link" href="#Why-these-models?">¶</a></h3><ul>
-<li>Naive baseline: always predict "up." Markets drift up over time, so this is actually a tougher benchmark than it sounds, and any honest model has to clear it.</li>
-<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">Logistic Regression</a>: a linear decision boundary in feature space, with interpretable coefficients. It's fast to fit and acts as a sanity check on whether the relationship between features and direction is roughly linear.</li>
-<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">Random Forest</a>: an ensemble of decision trees that can pick up non-linear interactions a linear model would miss.</li>
+<li>Naive baseline: just predict "up" every single day. The market drifts up over time, so this is actually a harder bar to clear than it sounds, and any model I build has to beat this to be worth anything.</li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">Logistic Regression</a>: a linear model that basically splits the feature space with a straight cut. It's fast, its coefficients are interpretable, and it's a good check on whether there's even a roughly linear relationship between my features and direction.</li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">Random Forest</a>: a bunch of decision trees averaged together (an ensemble), which can pick up non-linear stuff that a single linear model can't.</li>
 </ul>
-<p>I set <a href="https://scikit-learn.org/stable/modules/svm.html#unbalanced-problems"><code>class_weight='balanced'</code></a> on both ML models. Without it, scikit-learn pretty much just collapses to predicting the majority class ("up", which is around 52% of days) for almost every input, which inflates accuracy without the model actually learning anything. Balanced weights force the model to actually try to tell up days from down days.</p>
-<h3 id="Feature-Engineering">Feature Engineering<a class="anchor-link" href="#Feature-Engineering">¶</a></h3><p>I compute six features, all derived from publicly available past data so there's no look-ahead leakage:</p>
+<p>I also set <a href="https://scikit-learn.org/stable/modules/svm.html#unbalanced-problems"><code>class_weight='balanced'</code></a> on both models. Without it, since "up" is the majority class (around 52% of days), scikit-learn pretty much just lazily predicts "up" for almost every input, which makes the accuracy look okay without the model actually learning anything useful. Balanced weights force it to actually try to tell up days from down days.</p>
+<h3 id="Feature-Engineering">Feature Engineering<a class="anchor-link" href="#Feature-Engineering">¶</a></h3><p>I'm using six features, all built from data I would've actually had access to at the time (so no look-ahead cheating):</p>
 <table>
 <thead>
 <tr>
@@ -8303,7 +8303,7 @@ Mean |return| low volume : 0.009413
 </tr>
 </tbody>
 </table>
-<p>I compute each feature per stock and then <code>.shift(1)</code> it, so the row for date $t$ only sees information that was available at the close of $t-1$.</p>
+<p>I compute each feature per stock and then <code>.shift(1)</code> everything, so for any row dated $t$, the model is only ever looking at info that would've been available at the close of $t-1$.</p>
 </div>
 </div>
 </div>
