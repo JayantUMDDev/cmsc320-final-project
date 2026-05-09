@@ -7957,7 +7957,7 @@ Date range    : 2015-01-02 to 2024-12-20
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Exploratory-Data-Analysis">Exploratory Data Analysis<a class="anchor-link" href="#Exploratory-Data-Analysis">¶</a></h2><p>Before I get into the actual model, I want to do some exploratory analysis to figure out what the data actually looks like and decide which features even make sense to feed in. I'm running three different statistical methods here, and each one is tied to a modeling decision I'll have to make later.</p>
+<h2 id="Exploratory-Data-Analysis">Exploratory Data Analysis<a class="anchor-link" href="#Exploratory-Data-Analysis">¶</a></h2><p>Before I get into the actual model, I want to do some exploratory analysis to figure out what the data actually looks like and decide which features even make sense to feed in. I run three different tests below, and each one helps me decide something specific about how I should build the model.</p>
 <p>The first is descriptive statistics on daily returns, so I can see whether assuming normality anywhere would be a bad idea. The second is a one-way ANOVA on sector means, which tells me whether I should pool all sectors together or treat them separately. The third is a Welch t-test on whether trading volume is related to the size of a price move, which is the reason I'm even considering a volume feature in the model. Each one comes with a plot and a short conclusion, and I'm using $\alpha = 0.05$ throughout.</p>
 </div>
 </div>
