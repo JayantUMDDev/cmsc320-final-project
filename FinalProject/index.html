@@ -8968,11 +8968,12 @@ Sectors where RF (after threshold tuning) beats naive: 3 of 11
 <li>Threshold tuned on test: my single-split numbers tune the threshold on the test set itself for tutorial simplicity. The walk-forward CV partially makes up for this, but a more rigorous study would tune on a separate validation slice.</li>
 </ul>
 <h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h3><p>So in the end, the simple technical signals I tested don't really beat just predicting "up" every day for the broad market. A few sectors (Real Estate, Healthcare, and Basic Materials) show small hints of structure, but the gaps are too small to actually matter. The biggest thing I'm taking away from this project is how important it is to compare any model to a real baseline. Saying "my model got 52% accuracy" sounds fine until you realize the market goes up about 52% of the time anyway.</p>
-<h3 id="Future-Work">Future Work<a class="anchor-link" href="#Future-Work">¶</a></h3><ul>
-<li>Replace the pooled training with per-sector models and then ensemble them.</li>
-<li>Add macro features like VIX, term spread, and sector ETF returns, plus earnings-event flags.</li>
-<li>Use a probabilistic loss like log-loss or Brier score instead of accuracy, so I'm capturing how confident the model is, not just whether it's right.</li>
-<li>Run a back-test that includes transaction costs and position sizing, instead of only evaluating classification metrics.</li>
+<h3 id="Future-Work">Future Work<a class="anchor-link" href="#Future-Work">¶</a></h3><p>If I were going to keep going with this, the things I'd actually try first are the ones most likely to give the model something real to work with:</p>
+<ul>
+<li>Add news sentiment as a feature. A lot of the actual move in a stock on a given day comes from new information hitting the market, and the technical features I'm using can't see news at all. Pulling sentiment scores from a news API, or even a simple "how many news mentions does this stock have today" count, would probably add the most signal of anything I could try.</li>
+<li>Try a longer prediction horizon. Daily direction is really noisy because the day-to-day move is dominated by random news. If I switched to predicting 5-day or 20-day direction instead, the signal from momentum and mean-reversion features would have more of a chance to actually show through.</li>
+<li>Try a stronger model like XGBoost or LightGBM. Random Forest is fine, but gradient boosting is generally better on tabular problems like this, especially when there are subtle interactions between features. If there's a real edge buried in here, a stronger model is more likely to find it.</li>
+<li>Add features that capture what other stocks are doing. Right now I'm treating each stock independently, but a lot of how a stock moves on any given day depends on its sector and the broader market. A simple "how is the rest of my sector doing today" feature would probably help.</li>
 </ul>
 <h3 id="References">References<a class="anchor-link" href="#References">¶</a></h3><ul>
 <li>Andrew MVD. <em>S&amp;P 500 Stocks (daily updated).</em> Kaggle, 2024. <a href="https://www.kaggle.com/datasets/andrewmvd/sp-500-stocks">https://www.kaggle.com/datasets/andrewmvd/sp-500-stocks</a></li>
